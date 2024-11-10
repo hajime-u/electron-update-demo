@@ -54,37 +54,37 @@ const feed = `${server}/hajime-u/electron-update-demo/${process.platform}-${proc
 
 if (app.isPackaged) {
   autoUpdater.setFeedURL({url: feed});
-}
-autoUpdater.checkForUpdates();
+  autoUpdater.checkForUpdates();
 
-autoUpdater.on('update-downloaded', async () => {
-  const returnValue = await dialog.showMessageBox({
-    type: 'info',
-    title: 'Update Available',
-    message: 'A new version of the app is available. Do you want to update now?',
-    buttons: ['Update', 'Later']
+  autoUpdater.on('update-downloaded', async () => {
+    const returnValue = await dialog.showMessageBox({
+      type: 'info',
+      title: 'Update Available',
+      message: 'A new version of the app is available. Do you want to update now?',
+      buttons: ['Update', 'Later']
+    });
+    if (returnValue.response === 0) autoUpdater.quitAndInstall();
   });
-  if (returnValue.response === 0) autoUpdater.quitAndInstall();
-});
 
-autoUpdater.on('checking-for-update', () => {
-  console.log('Checking for update...');
-});
+  autoUpdater.on('checking-for-update', () => {
+    console.log('Checking for update...');
+  });
 
-autoUpdater.on('update-available', () => {
-  dialog.showMessageBox({
-    message: "New version is available",
-    buttons: ["OK"]
-  })
-});
+  autoUpdater.on('update-available', () => {
+    dialog.showMessageBox({
+      message: "New version is available",
+      buttons: ["OK"]
+    })
+  });
 
-autoUpdater.on('update-not-available', () => {
-  dialog.showMessageBox({
-    message: "No updates available",
-    buttons: ["OK"]
-  })
-});
+  autoUpdater.on('update-not-available', () => {
+    dialog.showMessageBox({
+      message: "No updates available",
+      buttons: ["OK"]
+    })
+  });
 
-autoUpdater.on('error', (error) => {
-  console.error(error);
-});
+  autoUpdater.on('error', (error) => {
+    console.error(error);
+  });
+}

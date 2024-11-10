@@ -1,7 +1,7 @@
 {
   "name": "electron-update-demo",
   "productName": "electron-update-demo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "My Electron application description",
   "main": "src/index.js",
   "scripts": {
