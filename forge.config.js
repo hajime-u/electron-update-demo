@@ -9,7 +9,9 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        name: "electron_publish"
+      },
     },
     {
       name: '@electron-forge/maker-zip',
@@ -41,4 +43,16 @@ module.exports = {
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
   ],
+  publishers: [
+    {
+      name: "@electron-forge/publisher-github",
+      platforms: ["win32", "linux"],
+      config: {
+        repository: {
+          owner: "hajime-u",
+          name: "electron-update-demo"
+        }
+      }
+    }
+  ]
 };

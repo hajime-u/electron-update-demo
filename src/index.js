@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, autoUpdater, dialog } = require('electron');
 const path = require('node:path');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -49,3 +49,42 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+const server = "https://update.electronjs.org";
+const feed = `${server}/hajime-u/electron-update-demo/${process.platform}-${process.arch}/${app.getVersion()}`;
+
+if (app.isPackaged) {
+  autoUpdater.setFeedURL({url: feed});
+}
+autoUpdater.checkForUpdates();
+
+autoUpdater.on('update-downloaded', async () => {
+  const returnValue = await dialog.showMessageBox({
+    type: 'info',
+    title: 'Update Available',
+    message: 'A new version of the app is available. Do you want to update now?',
+    buttons: ['Update', 'Later']
+  });
+  if (returnValue.response === 0) autoUpdater.quitAndInstall();
+});
+
+autoUpdater.on('checking-for-update', () => {
+  console.log('Checking for update...');
+});
+
+autoUpdater.on('update-available', () => {
+  dialog.showMessageBox({
+    message: "New version is available",
+    buttons: ["OK"]
+  })
+});
+
+autoUpdater.on('update-not-available', () => {
+  dialog.showMessageBox({
+    message: "No updates available",
+    buttons: ["OK"]
+  })
+});
+
+autoUpdater.on('error', (error) => {
+  console.error(error);
+});
